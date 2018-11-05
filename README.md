@@ -16,12 +16,12 @@ Para realizar as operações necessárias no algoritmo do simplex, é necessári
 
 ### Estrutura de Dados: Matriz
 
-​	[x] Multiplicação da matriz por um escalar _e_;
+-	[x] Multiplicação da matriz por um escalar _e_;
 
-​	[x] Calcula o produto escalar de um vetor linha/coluna da matriz por um vetor dado como entrada;
+-	[x] Calcula o produto escalar de um vetor linha/coluna da matriz por um vetor dado como entrada;
 
-​	[ ] Produto Matricial dos elementos da matriz;
+-	[ ] Produto Matricial dos elementos da matriz;
 
-​	[ ] Gerar uma matriz transposta a partir da matriz da estrutura de dados;
+-	[ ] Gerar uma matriz transposta a partir da matriz da estrutura de dados;
 
-​	[ ] Calcular Inversa da matriz usando decomposição LU;
+-	[ ] Calcular Inversa da matriz usando decomposição LU;
