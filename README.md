@@ -20,8 +20,8 @@ Para realizar as operações necessárias no algoritmo do simplex, é necessári
 
 -	[x] Calcula o produto escalar de um vetor linha/coluna da matriz por um vetor dado como entrada;
 
--	[ ] Produto Matricial dos elementos da matriz;
+-	[x] Produto Matricial dos elementos da matriz;
 
--	[ ] Gerar uma matriz transposta a partir da matriz da estrutura de dados;
+-	[x] Gerar uma matriz transposta a partir da matriz da estrutura de dados;
 
 -	[ ] Calcular Inversa da matriz usando decomposição LU;
