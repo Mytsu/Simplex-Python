@@ -181,6 +181,9 @@ class Matrix:
             return all(i == 0 for i in chain.from_iterable(self._data))
         return self._data == other
 
+    def __getitem__(self, key):
+        return self._data[key[1]][key[0]]
+
     def __neg__(self):
         data = deepcopy(self._data)
         for col in data:
@@ -195,6 +198,11 @@ class Matrix:
         for col in data:
             col[:] = map(partial(round, ndigits=ndigits), col)
         return Matrix(data=data)
+
+    def __setitem__(self, key, value):
+        if not isinstance(value, Number):
+            raise ValueError('Value must be a number.')
+        self._data[key[1]][key[0]] = value
 
     def __sub__(self, other):
         return self.elementwise_operation(other, sub)
