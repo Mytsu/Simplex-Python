@@ -4,7 +4,7 @@ from copy import deepcopy
 from functools import partial
 from itertools import chain, islice
 from numbers import Number
-from operator import add, sub
+from operator import add, mul, sub
 from typing import Callable, Generator, List
 
 
@@ -184,14 +184,25 @@ class Matrix:
     def __getitem__(self, key):
         return self._data[key[1]][key[0]]
 
+    def __iter__(self):
+        return (a for a in chain.from_iterable(self._data))
+
     def __neg__(self):
         data = deepcopy(self._data)
         for col in data:
             col[:] = map(lambda x: -x, col)
         return Matrix(data=data)
 
+    def __mul__(self, other):
+        if isinstance(other, Matrix):
+            return self.elementwise_operation(other, mul)
+        return self.scalar_multiplication(other)
+
     def __repr__(self):
         return f'Matrix(data={str(self._data)})'
+
+    def __rmul__(self, other):
+        return self.scalar_multiplication(other)
 
     def __round__(self, ndigits=None):
         data = deepcopy(self._data)
