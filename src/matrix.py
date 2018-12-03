@@ -141,9 +141,9 @@ class Matrix:
     def to_row_echelon(self, reduced=True):
         """Transform to row echelon form."""
         for piv in range(min(self.rows, self.columns)):
-            i_max, _ = max(
-                (p for p in islice(enumerate(self.column(piv)), piv, None)),
-                key=lambda x: x[1])
+            i_max, _ = max((p for p in islice(
+                enumerate(self.column(piv)), piv, None)),
+                           key=lambda x: abs(x[1]))
             col = self._data[piv]
             if col[i_max] == 0:
                 raise ZeroDivisionError(

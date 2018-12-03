@@ -40,6 +40,10 @@ class TestMatrix(unittest.TestCase):
         matrix = Matrix(data=[[1, 2, 3], [4, 8, 12], [16, 32, 48]])
         with self.assertRaises(ZeroDivisionError):
             matrix.invert()
+        matrix = Matrix(data=[[1, 0, 0, 0], [0, 1, 0, 0], [6, 1, -1, 0],
+                              [0, 0, 0, 1]])
+        inverse = matrix.inverse()
+        self.assertAlmostEqual(matrix, inverse)
 
 
 if __name__ == "__main__":
