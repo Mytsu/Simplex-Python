@@ -36,7 +36,7 @@ class Simplex:
 
     def initial_bfs(self):
         for col in range(self.variables):
-            if self.candidate(col) and col not in self.base_variables:
+            if self.can_be_base(col) and col not in self.base_variables:
                 i = list(self.coefficients.column(col)).index(1)
                 self.base_variables[i] = col
         assert all(x is not None for x in self.base_variables)
@@ -50,7 +50,7 @@ class Simplex:
         self.base = Matrix(len(data), len(data[0]), data)
         self.base_inv = self.base.inverse()
 
-    def candidate(self, i: int) -> bool:
+    def can_be_base(self, i: int) -> bool:
         """Checks if column can be part of base."""
         return all(j in (0, 1) for j in self.coefficients.column(i)) and \
             list(self.coefficients.column(i)).count(1) == 1
@@ -66,7 +66,7 @@ class Simplex:
 
     @property
     def base_cost(self) -> Matrix:
-        data = [c for i, c in enumerate(self.cost) if i in self.base_variables]
+        data = [self.cost[0, i] for i in self.base_variables]
         return Matrix(data=[data])
 
     def _result(self):
