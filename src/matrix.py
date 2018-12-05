@@ -165,6 +165,9 @@ class Matrix:
                 (self.column(i) for i in range(self.columns)),
                 (other.column(j) for j in range(other.columns)))])
 
+    def copy(self):
+        return deepcopy(self)
+
     def __abs__(self):
         data = deepcopy(self._data)
         for col in data:

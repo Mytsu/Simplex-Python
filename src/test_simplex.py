@@ -18,15 +18,6 @@ class TestSimplex(unittest.TestCase):
         result = Matrix(data=[list(islice(simplex.solution, 2))])
         self.assertAlmostEqual(result, expected)
 
-    def teste_dois(self):
-        A = [[8, 5, 5], [5, 4, 4], [4, 2, 2], [1, 0, 0], [0, 1, 0],
-             [0, 1, -1], [0, 0, 1]]
-        b = [120, 200, 140]
-        c = [-20, -22, -18, 0, 0, 0, 10000]
-        simplex = Simplex(A, b, c)
-        simplex.run()
-        self.fail('Cadê o teste?')
-
     def teste_tres(self):
         A = [[6, 1, -1, 0], [4, 2, 1, 1], [1, 0, 0, 0], [0, 1, 0, 0],
              [0, 0, 1, 0], [0, 0, 0, 1]]
@@ -69,15 +60,6 @@ class TestSimplex(unittest.TestCase):
         expected = Matrix(data=[[0, 10, 35]])
         result = Matrix(data=[list(islice(simplex.solution, 3))])
         self.assertAlmostEqual(result, expected)
-
-
-'''
-min -2*x1 - 3*x2 - 4*x3 - 1000000
-
-R1:   x1 + x2 +   x3 + x4      = 30;
-R2: 2*x1 + x2 + 3*x3      + y1 = 60;
-'''
-
 
 if __name__ == "__main__":
     unittest.main()

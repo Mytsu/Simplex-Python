@@ -1,5 +1,5 @@
 from numbers import Number
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from matrix import Matrix
 
@@ -8,16 +8,36 @@ class Simplex:
 
     N_DIGITS = 5
 
-    def __init__(self, A: List[List[Number]], b: List, c: List):
-        self.coefficients = Matrix(data=A)
-        self.cost = Matrix(1, len(c), c)
-        self.resources = Matrix(len(b), 1, b)
+    def __init__(self,
+                 A: Union[List[List[Number]], Matrix],
+                 b: Union[List[Number], Matrix],
+                 c: Union[List[Number], Matrix]):
+
+        if isinstance(A, Matrix):
+            self.coefficients = A
+        else:
+            self.coefficients = Matrix(data=A)
+
+        if isinstance(b, Matrix):
+            self.resources = b
+        else:
+            self.resources = Matrix(len(b), 1, b)
+
+        if isinstance(c, Matrix):
+            self.cost = c
+        else:
+            self.cost = Matrix(1, len(c), c)
+
         self.variables = self.coefficients.columns
         self.restrictions = self.coefficients.rows
-        self.solution: Matrix
         self.base_variables = [None for _ in range(self.restrictions)]
+        self.multiple_solutions = False
+        self.solution: Matrix
+        self.second_solution: Matrix
         self.base: Matrix
         self.base_inv: Matrix
+        self.reduced_cost: List[Number]
+        self.direction: List[Number]
 
     def run(self):
 
@@ -26,10 +46,12 @@ class Simplex:
 
         enter = self.next_to_enter_base()
         while enter is not None:
-            direction = self.get_direction(enter)
-            if all(x >= 0 for x in direction):
+            self.direction = self.get_direction(enter)
+            if all(x >= 0 for x in self.direction):
                 break
-            self.new_bfs(direction, enter)
+            self.new_bfs(self.direction, enter)
+            if self.multiple_solutions:
+                break
             self.update_base()
             enter = self.next_to_enter_base()
 
@@ -56,12 +78,21 @@ class Simplex:
 
     def next_to_enter_base(self) -> List:
         """Get the index of the column that will enter to the base."""
-        reduced_cost = round(self.cost -
-                             self.base_cost.transposed().product(
-                                 self.base_inv.product(self.coefficients)),
-                             Simplex.N_DIGITS)
+        reduced_cost = round(self.cost - self.base_cost.transposed().product(
+            self.base_inv.product(self.coefficients)), Simplex.N_DIGITS)
+        self.reduced_cost = reduced_cost
 
-        return next((i for i, k in enumerate(reduced_cost) if k < 0), None)
+        entering = next((i for i, k in enumerate(reduced_cost) if k < 0), None)
+        if entering is not None:
+            return entering
+
+        entering, cost = next(
+            ((i, k) for i, k in enumerate(reduced_cost)
+             if k <= 0 and i not in self.base_variables), (None, None))
+        if cost == 0:
+            self.multiple_solutions = True
+            self.second_solution = self.solution.copy()
+        return entering
 
     @property
     def base_cost(self) -> Matrix:
