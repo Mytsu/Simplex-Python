@@ -32,7 +32,6 @@ class Simplex:
             self.new_bfs(direction, enter)
             self.update_base()
             enter = self.next_to_enter_base()
-        return self._result()
 
     def initial_bfs(self):
         for col in range(self.variables):
@@ -68,9 +67,6 @@ class Simplex:
     def base_cost(self) -> Matrix:
         data = [self.cost[0, i] for i in self.base_variables]
         return Matrix(data=[data])
-
-    def _result(self):
-        pass
 
     def get_direction(self, entering: int) -> Matrix:
         base_dir = -self.base_inv.product(
