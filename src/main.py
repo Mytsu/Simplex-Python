@@ -1,10 +1,11 @@
 from json import JSONDecoder
 from sys import argv
+from textwrap import wrap
 from typing import List
 
 from matrix import Matrix
 from simplex import Simplex
-from solutions import interpretation
+from solutions import get_interpretation
 
 
 def read_file(file_name: str) -> (List[List[float]], List[float], List[float],
@@ -26,7 +27,11 @@ def main():
     simplex = Simplex(coefficients, instance['b'], instance['c'])
     simplex.run()
 
-    interpretation(simplex, instance['vars'], instance['y'], instance['type'])
+    message = get_interpretation(simplex, instance['vars'], instance['y'],
+                                 instance['type'])
+
+    with open('interpretation.txt', 'w') as file:
+        file.write('\n'.join(wrap(message)))
 
 
 if __name__ == '__main__':

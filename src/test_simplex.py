@@ -61,5 +61,6 @@ class TestSimplex(unittest.TestCase):
         result = Matrix(data=[list(islice(simplex.solution, 3))])
         self.assertAlmostEqual(result, expected)
 
+
 if __name__ == "__main__":
     unittest.main()
